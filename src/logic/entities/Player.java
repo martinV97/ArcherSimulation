@@ -51,12 +51,17 @@ public class Player {
 	
 	public void shootArrow(boolean isLucky) {
 		double shootDistance  = 0;
-		if (isLucky)
-			this.roundDistance += (setArrowVelocity() * Math.sin(2 * setAngleShoot()) / 9.8) ;
+		if (isLucky) {
+			shootDistance = (Math.pow(setArrowVelocity(), 2) * Math.sin(2 * setAngleShoot()) / 9.8);
+			if((this.experience / 8) >= 1) {
+				shootDistance += shootDistance * ((this.experience / 8) * 0.025);
+			}
+			this.roundDistance += shootDistance;
+		}
 		else {
 			while (this.roundStamina >= 4) {
 				this.roundStamina -= 4;
-				shootDistance = (setArrowVelocity() * Math.sin(2 * setAngleShoot()) / 9.8);
+				shootDistance = (Math.pow(setArrowVelocity(), 2) * Math.sin(2 * setAngleShoot()) / 9.8);
 				if((this.experience / 8) >= 1) {
 					shootDistance += shootDistance * ((this.experience / 8) * 0.025);
 				}
