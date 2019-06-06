@@ -8,8 +8,14 @@ public class Round {
 	private ArrayList<Player> teamTwo;
 	private Player tmpPlayerTeamOne;
 	private Player tmpPlayerTeamTwo;
+	private Player tmpLuckyPlayerTeamOne;
+	private Player tmpLuckyPlayerTeamTwo;
 	private double teamOneDistance = 0;
 	private double teamTwoDistance = 0;
+	private int earnedExperience = 0;
+	private float earnedLucky = 0;
+	private int countLuckyStreakTeamOne = 1;
+	private int countLuckyStreakTeamTwo = 1;
 	
 	public Round(ArrayList<Player> teamOne, ArrayList<Player> teamTwo ) {
 		this.teamOne = teamOne;
@@ -20,8 +26,8 @@ public class Round {
 	
 	private void setTeamLucky() {
 		for (int i = 0; i < 20; i++) {
-			this.teamOne.get(i).setLucky();
-			this.teamTwo.get(i).setLucky();
+			this.teamOne.get(i).setRoundLucky();
+			this.teamTwo.get(i).setRoundLucky();
 		}		
 	}
 
@@ -38,6 +44,7 @@ public class Round {
 		findLuckiest();
 		this.tmpPlayerTeamOne.shootArrow(true);
 		this.tmpPlayerTeamOne.shootArrow(true);
+		validateLuckyStreak();
 		setNullTmpPlayers();
 	}
 
@@ -51,6 +58,49 @@ public class Round {
 			if(this.tmpPlayerTeamTwo.getLucky() < this.teamTwo.get(i).getLucky())
 				this.tmpPlayerTeamTwo = this.teamTwo.get(i);
 		}
+	}
+	
+	private void validateLuckyStreak() {
+		if(this.tmpLuckyPlayerTeamOne == null) {
+			this.tmpLuckyPlayerTeamOne = this.tmpPlayerTeamOne;
+			this.tmpLuckyPlayerTeamTwo = this.tmpPlayerTeamTwo;
+		}else {
+			luckyStreakTeamOne();
+			luckyStreakTeamTwo();
+			setPosibleLucky();
+		}
+	}
+
+	private void luckyStreakTeamOne() {
+		if(this.tmpLuckyPlayerTeamOne == this.tmpPlayerTeamOne)
+			this.countLuckyStreakTeamOne ++;
+		else {
+			this.tmpLuckyPlayerTeamOne = this.tmpPlayerTeamOne;
+			this.countLuckyStreakTeamTwo = 1;
+		}
+	}
+	
+	private void luckyStreakTeamTwo() {
+		if(this.tmpLuckyPlayerTeamTwo == this.tmpPlayerTeamTwo)
+			this.countLuckyStreakTeamOne ++;
+		else {
+			this.tmpLuckyPlayerTeamTwo = this.tmpPlayerTeamTwo;
+			this.countLuckyStreakTeamTwo = 1;
+		}
+	}
+	
+	private void setPosibleLucky() {
+		if(this.countLuckyStreakTeamOne == 3) {
+			this.tmpLuckyPlayerTeamOne.setEarnedLucky((float) 0.05);
+			this.tmpLuckyPlayerTeamOne = null;
+			this.earnedLucky += 0.05;
+		}
+		if(this.countLuckyStreakTeamTwo == 3) {
+			this.tmpLuckyPlayerTeamTwo.setEarnedLucky((float) 0.05);
+			this.tmpLuckyPlayerTeamTwo = null;
+			this.earnedLucky += 0.05;
+		}
+			
 	}
 	
 	public void teamWinner() {
@@ -68,6 +118,7 @@ public class Round {
 	private void setTeamExperience(ArrayList<Player> team) {
 		for (Player player : team) {
 			player.setExperience(player.getExperience() + 2);
+			this.earnedExperience += 2;
 		}
 	}
 
@@ -82,6 +133,7 @@ public class Round {
 		findLongestSoloDistance();
 		this.tmpPlayerTeamOne.setExperience(this.tmpPlayerTeamOne.getExperience() + 2);
 		this.tmpPlayerTeamTwo.setExperience(this.tmpPlayerTeamTwo.getExperience() + 2);
+		this.earnedExperience += 4;
 		setNullTmpPlayers();
 	}
 
@@ -147,5 +199,28 @@ public class Round {
 	public void setWinnerRound(String winnerRound) {
 		this.winnerRound = winnerRound;
 	}
-	
+
+	public float getEarnedLucky() {
+		return earnedLucky;
+	}
+
+	public int getEarnedExperience() {
+		return earnedExperience;
+	}
+
+	public Player getTmpLuckyPlayerTeamOne() {
+		return tmpLuckyPlayerTeamOne;
+	}
+
+	public void setTmpLuckyPlayerTeamOne(Player tmpLuckyPlayerTeamOne) {
+		this.tmpLuckyPlayerTeamOne = tmpLuckyPlayerTeamOne;
+	}
+
+	public Player getTmpLuckyPlayerTeamTwo() {
+		return tmpLuckyPlayerTeamTwo;
+	}
+
+	public void setTmpLuckyPlayerTeamTwo(Player tmpLuckyPlayerTeamTwo) {
+		this.tmpLuckyPlayerTeamTwo = tmpLuckyPlayerTeamTwo;
+	}
 }

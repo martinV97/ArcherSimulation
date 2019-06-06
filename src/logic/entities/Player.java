@@ -3,16 +3,20 @@ package logic.entities;
 import java.util.Random;
 
 public class Player {
+	private String name;
+	private int age;
 	private char gender;
 	private int stamina = 0;
 	private int roundStamina = 0;
 	private int precision = 0;
 	private int experience = 10;
-	private float lucky = 0;
+	private float earnedLucky = 0;
+	private float roundLucky = 0;
 	private double roundDistance = 0;
 	private Random random;
 	
-	public Player() {
+	public Player(String name) {
+		this.name = name;
 		this.random = new Random();
 		selectGender();
 		generateHabilities();
@@ -30,6 +34,7 @@ public class Player {
 		setResistence();
 		setPrecision();
 		this.experience = this.random.nextInt(10) + 1;
+		this.age = this.random.nextInt(10) + 18; 
 	}
 
 
@@ -80,6 +85,15 @@ public class Player {
 			return 30 - this.random.nextInt(5);
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+
 	public char getGender() {
 		return gender;
 	}
@@ -101,11 +115,15 @@ public class Player {
 	}
 
 	public float getLucky() {
-		return lucky;
+		return roundLucky + earnedLucky;
 	}
 
-	public void setLucky() {
-		this.lucky = this.random.nextFloat() + this.random.nextInt(5);	
+	public void setRoundLucky() {
+		this.roundLucky = this.random.nextFloat() + this.random.nextInt(5);	
+	}
+
+	public void setEarnedLucky(float earnedLucky) {
+		this.earnedLucky += earnedLucky;
 	}
 
 	public int getExperience() {

@@ -40,10 +40,22 @@ public class ManagmentGames {
 		}
 	}
 	
+	public void averageLuckyByGame() {
+		for (int i = 0; i < listOfGames.size(); i++) {
+			System.out.println("El promedio de suerte ganado en el juego " + (i +1) + " fue: " + listOfGames.get(i).getAverageEarnedLucky());
+		}
+	}
+	
+	public void averageExperienceByGame() {
+		for (int i = 0; i < listOfGames.size(); i++) {
+			System.out.println("El promedio de experiencia ganado en el juego " + (i +1) + " fue: " + listOfGames.get(i).getAverageEarnedEXperience());
+		}
+	}
+	
 	public void getLuckiestPlayer() {
-		System.out.println("El jugador con más suerte en el escenario lluvioso: " + getMostLuckiestPlayerByEscenary(listOfGamesRain));
-		System.out.println("El jugador con más suerte en el escenario vientoso: " + getMostLuckiestPlayerByEscenary(listOfGamesWind));
-		System.out.println("El jugador con más suerte en el escenario perfecto: " + getMostLuckiestPlayerByEscenary(listOfGamesPerfect));
+		System.out.println("El jugador con más suerte en el escenario lluvioso: " + getMostLuckiestPlayerByEscenary(listOfGamesRain).getName());
+		System.out.println("El jugador con más suerte en el escenario vientoso: " + getMostLuckiestPlayerByEscenary(listOfGamesWind).getName());
+		System.out.println("El jugador con más suerte en el escenario perfecto: " + getMostLuckiestPlayerByEscenary(listOfGamesPerfect).getName());
 	}
 	
 	private Player getMostLuckiestPlayerByEscenary(ArrayList<Game> listOfGames) {
@@ -59,9 +71,9 @@ public class ManagmentGames {
 	}
 	
 	public void getMostExperiencedPlayer() {
-		System.out.println("El jugador con más experiencia en el escenario lluvioso: " + getMostExperiencedPlayerByEscenary(listOfGamesRain));
-		System.out.println("El jugador con más experiencia en el escenario vientoso: " + getMostExperiencedPlayerByEscenary(listOfGamesWind));
-		System.out.println("El jugador con más experiencia en el escenario perfecto: " + getMostExperiencedPlayerByEscenary(listOfGamesPerfect));
+		System.out.println("El jugador con más experiencia en el escenario lluvioso: " + getMostExperiencedPlayerByEscenary(listOfGamesRain).getName());
+		System.out.println("El jugador con más experiencia en el escenario vientoso: " + getMostExperiencedPlayerByEscenary(listOfGamesWind).getName());
+		System.out.println("El jugador con más experiencia en el escenario perfecto: " + getMostExperiencedPlayerByEscenary(listOfGamesPerfect).getName());
 	}
 	
 	private Player getMostExperiencedPlayerByEscenary(ArrayList<Game> listOfGames) {

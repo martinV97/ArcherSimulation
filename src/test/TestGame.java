@@ -7,6 +7,10 @@ public class TestGame {
 	public static void main(String[] args) {
 		ManagmentGames managmentGames = new ManagmentGames();
 		System.out.println("------------------------------------------------------------------");
+		managmentGames.averageLuckyByGame();
+		System.out.println("------------------------------------------------------------------");
+		managmentGames.averageExperienceByGame();
+		System.out.println("------------------------------------------------------------------");
 		managmentGames.getLuckiestPlayer();
 		System.out.println("------------------------------------------------------------------");
 		managmentGames.getMostExperiencedPlayer();

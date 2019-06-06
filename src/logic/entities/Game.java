@@ -12,6 +12,10 @@ public class Game {
 	private int victoryTeamTwoCount = 0;
 	private char weather;
 	private String winnerGame;
+	private int earnedExperienceInGame = 0;
+	private float earnedLuckyInGame = 0;
+	private Player tmpLuckyPlayerTeamOne;
+	private Player tmpLuckyPlayerTeamTwo;
 	
 	public Game() {
 		this.isPlaying = true;
@@ -40,8 +44,8 @@ public class Game {
 		this.teamOne = new ArrayList<>();
 		this.teamTwo = new ArrayList<>();
 		for (int i = 0; i < 20; i++) {
-			this.teamOne.add(new Player());
-			this.teamTwo.add(new Player());
+			this.teamOne.add(new Player("Jugador de equipo 1, número: " + (i + 1)));
+			this.teamTwo.add(new Player("Jugador de equipo 2, número: " + (i + 1)));
 		}
 	}
 
@@ -50,9 +54,15 @@ public class Game {
 		int count = 0;
 		while (this.isPlaying) {
 			this.roundList.add(new Round(this.teamOne, this.teamTwo));
+			this.roundList.get(count).setTmpLuckyPlayerTeamOne(this.tmpLuckyPlayerTeamOne);
+			this.roundList.get(count).setTmpLuckyPlayerTeamTwo(this.tmpLuckyPlayerTeamTwo);
 			this.roundList.get(count).luckyShot();
 			this.roundList.get(count).teamWinner();
 			this.roundList.get(count).soloWinner();
+			this.tmpLuckyPlayerTeamOne = this.roundList.get(count).getTmpLuckyPlayerTeamOne();
+			this.tmpLuckyPlayerTeamTwo = this.roundList.get(count).getTmpLuckyPlayerTeamTwo();
+			this.earnedExperienceInGame += this.roundList.get(count).getEarnedExperience();
+			this.earnedLuckyInGame += this.roundList.get(count).getEarnedLucky();
 			countRoundVictory(this.roundList.get(count));
 			validateEndGame();
 			count++;
@@ -113,6 +123,14 @@ public class Game {
 				tmp = round.getLuckiestPlayer();
 		}
 		return tmp;
+	}
+	
+	public float getAverageEarnedLucky() {
+		return this.earnedLuckyInGame / this.roundList.size();
+	}
+	
+	public double getAverageEarnedEXperience() {
+		return this.earnedExperienceInGame / this.roundList.size();
 	}
 	
 	public char getWeather() {
