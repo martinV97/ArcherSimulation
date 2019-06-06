@@ -30,7 +30,6 @@ public class Player {
 		setResistence();
 		setPrecision();
 		this.experience = this.random.nextInt(10) + 1;
-		this.lucky = this.random.nextFloat() + this.random.nextInt(5);		
 	}
 
 
@@ -79,7 +78,11 @@ public class Player {
 			return 30 + this.random.nextInt(5);
 		else
 			return 30 - this.random.nextInt(5);
-	}	
+	}
+
+	public char getGender() {
+		return gender;
+	}
 
 	public int getStamina() {
 		return stamina;
@@ -101,8 +104,8 @@ public class Player {
 		return lucky;
 	}
 
-	public void setLucky(float lucky) {
-		this.lucky = lucky;
+	public void setLucky() {
+		this.lucky = this.random.nextFloat() + this.random.nextInt(5);	
 	}
 
 	public int getExperience() {

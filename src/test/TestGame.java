@@ -1,11 +1,23 @@
 package test;
 
-import logic.entities.Game;
+import logic.controller.ManagmentGames;
 
 public class TestGame {
 
 	public static void main(String[] args) {
-		Game game = new Game();
+		ManagmentGames managmentGames = new ManagmentGames();
+		System.out.println("------------------------------------------------------------------");
+		managmentGames.getLuckiestPlayer();
+		System.out.println("------------------------------------------------------------------");
+		managmentGames.getMostExperiencedPlayer();
+		System.out.println("------------------------------------------------------------------");
+		managmentGames.teamWithMostVictoriesByEscenary();
+		System.out.println("------------------------------------------------------------------");
+		managmentGames.teamWithMostVictories();
+		System.out.println("------------------------------------------------------------------");
+		managmentGames.getGenderWithMostWinsByEscenary();
+		System.out.println("------------------------------------------------------------------");
+		managmentGames.getGenderWithMostWins();
 	}
 
 }

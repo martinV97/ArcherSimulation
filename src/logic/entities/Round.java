@@ -14,9 +14,17 @@ public class Round {
 	public Round(ArrayList<Player> teamOne, ArrayList<Player> teamTwo ) {
 		this.teamOne = teamOne;
 		this.teamTwo = teamTwo;
+		setTeamLucky();
 		startShooting();
 	}
 	
+	private void setTeamLucky() {
+		for (int i = 0; i < 20; i++) {
+			this.teamOne.get(i).setLucky();
+			this.teamTwo.get(i).setLucky();
+		}		
+	}
+
 	private void startShooting() {
 		for (int i = 0; i < 20; i++) {
 			this.teamOne.get(i).setRoundStamina(this.teamOne.get(i).getStamina());
@@ -94,9 +102,47 @@ public class Round {
 		this.tmpPlayerTeamTwo = null;
 	}
 
+	public char getVictoriesByGender(ArrayList<Player> team) {
+		int maleCount = 0, femaleCount = 0;
+		for (int i = 0; i < 20; i++) {
+			if(team.get(i).getGender() == 'M')
+				maleCount++;
+			else
+				femaleCount++;
+				
+		}
+		if(maleCount >= femaleCount)
+			return 'M';
+		else
+			return 'F';
+	}
+	
 	public String getWinnerRound() {
 		return winnerRound;
 	}
+	
+	public Player getMostExperiencedPlayer() {
+		Player tmp = this.teamOne.get(0);
+		for (int i = 0; i < 20; i++) {
+			if(tmp.getExperience() < this.teamOne.get(i).getExperience())
+				tmp = this.teamOne.get(i);
+			if(tmp.getExperience() < this.teamTwo.get(i).getExperience())
+				tmp = this.teamTwo.get(i);
+		}
+		return tmp;
+	}
+	
+	public Player getLuckiestPlayer() {
+		Player tmp = this.teamOne.get(0);
+		for (int i = 0; i < 20; i++) {
+			if(tmp.getLucky() < this.teamOne.get(i).getLucky())
+				tmp = this.teamOne.get(i);
+			if(tmp.getLucky() < this.teamTwo.get(i).getLucky())
+				tmp = this.teamTwo.get(i);
+		}
+		return tmp;
+	}
+
 
 	public void setWinnerRound(String winnerRound) {
 		this.winnerRound = winnerRound;

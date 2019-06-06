@@ -1,22 +1,39 @@
 package logic.entities;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Game {
 	private ArrayList<Player> teamOne;
 	private ArrayList<Player> teamTwo;
 	private ArrayList<Round> roundList;
+	private boolean isPlaying;
+	private int victoryTeamOneCount = 0;
+	private int victoryTeamTwoCount = 0;
 	private char weather;
+	private String winnerGame;
 	
 	public Game() {
+		this.isPlaying = true;
 		setWeather();
 		startTeams();
 		startGame();
 	}
 	
 	private void setWeather() {
-		// TODO Auto-generated method stub
-		
+		switch (new Random().nextInt(3)) {
+		case 0:
+			this.weather = 'V';
+			break;
+		case 1:
+			this.weather = 'L';
+			break;
+		case 2:
+			this.weather = 'P';
+			break;
+		default:
+			break;
+		}
 	}
 	
 	private void startTeams() {
@@ -30,12 +47,80 @@ public class Game {
 
 	private void startGame() {
 		this.roundList = new ArrayList<>();
-		for (int i = 0; i < 500; i++) {
+		int count = 0;
+		while (this.isPlaying) {
 			this.roundList.add(new Round(this.teamOne, this.teamTwo));
-			this.roundList.get(i).luckyShot();
-			this.roundList.get(i).teamWinner();
-			System.out.println(this.roundList.get(i).getWinnerRound());
+			this.roundList.get(count).luckyShot();
+			this.roundList.get(count).teamWinner();
+			this.roundList.get(count).soloWinner();
+			countRoundVictory(this.roundList.get(count));
+			validateEndGame();
+			count++;
 		}
 	}
+	
+	private void countRoundVictory(Round round) {
+		if(round.getWinnerRound().equals("Equipo 1"))
+			this.victoryTeamOneCount++;
+		else
+			this.victoryTeamTwoCount++;
+	}
 
+	private void validateEndGame() {
+		if(this.victoryTeamOneCount == 10) {
+			this.isPlaying = false;
+			this.winnerGame = "Equipo 1";
+		}
+		if (this.victoryTeamTwoCount == 10) {
+			this.isPlaying = false;
+			this.winnerGame = "Equipo 2";
+		}
+	}
+	
+	public char getWinnerByGenderInGame() {
+		int maleCount = 0, femaleCount = 0;
+		for (Round round : roundList) {
+			if(round.getWinnerRound().equals("Equipo 1"))
+				if(round.getVictoriesByGender(this.teamOne) == 'M')
+					maleCount++;
+				else
+					femaleCount++;
+			else
+				if(round.getVictoriesByGender(this.teamTwo) == 'M')
+					maleCount++;
+				else
+					femaleCount++;
+		}
+		if(maleCount >= femaleCount)
+			return 'M';
+		else
+			return 'F';
+	}
+	
+	public Player getMostExperiencedPlayer() {
+		Player tmp = roundList.get(0).getMostExperiencedPlayer();
+		for (Round round : roundList) {
+			if(tmp.getExperience() < round.getMostExperiencedPlayer().getExperience())
+				tmp = round.getMostExperiencedPlayer();
+		}
+		return tmp;
+	}
+	
+	public Player getLuckiestPlayer() {
+		Player tmp = roundList.get(0).getLuckiestPlayer();
+		for (Round round : roundList) {
+			if(tmp.getLucky() < round.getLuckiestPlayer().getLucky())
+				tmp = round.getLuckiestPlayer();
+		}
+		return tmp;
+	}
+	
+	public char getWeather() {
+		return weather;
+	}
+
+	public String getWinnerGame() {
+		return winnerGame;
+	}	
+	
 }
