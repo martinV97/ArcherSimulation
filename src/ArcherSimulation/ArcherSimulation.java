@@ -1,8 +1,14 @@
-package test;
+package ArcherSimulation;
 
 import logic.controller.ManagementGames;
 
-public class TestGame {
+/**
+ * Clase principal donde se ejecutan la simulación
+ * y se muestran los reportes de dicha simulación.
+ * @author Martin
+ *
+ */
+public class ArcherSimulation {
 
 	public static void main(String[] args) {
 		ManagementGames managmentGames = new ManagementGames();

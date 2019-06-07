@@ -2,6 +2,11 @@ package logic.entities;
 
 import java.util.Random;
 
+/**
+ * @author Martin
+ * Clase Player, donde se encuentran los atributos
+ * de un jugador en la simulación del juegos de arqueros.
+ */
 public class Player {
 	private String name;
 	private int age;
@@ -15,6 +20,10 @@ public class Player {
 	private double roundDistance = 0;
 	private Random random;
 	
+	/**
+	 * Constructor de la clase Player
+	 * @param name Nombre asignado al jugador
+	 */
 	public Player(String name) {
 		this.name = name;
 		this.random = new Random();
@@ -22,7 +31,9 @@ public class Player {
 		generateHabilities();
 	}
 
-
+	/**
+	 * Método que asigna el genero al jugador de manera aleatoria
+	 */
 	private void selectGender() {
 		if(this.random.nextInt(2) == 0)
 			this.gender = 'M';
@@ -30,6 +41,11 @@ public class Player {
 			this.gender = 'F';
 	}
 	
+	/**
+	 * Método que genera aleatoriamente,
+	 * el valor de las habilidades al
+	 * jugador.
+	 */
 	private void generateHabilities() {
 		setResistence();
 		setPrecision();
@@ -37,7 +53,10 @@ public class Player {
 		this.age = this.random.nextInt(10) + 18; 
 	}
 
-
+	/**
+	 * Método que genera la resistencia del juagdor
+	 * de manera aleatoria, dependiendo del genero.
+	 */
 	private void setResistence() {
 		if(this.gender == 'M')
 			this.stamina = 50 + this.random.nextInt(5);
@@ -45,7 +64,10 @@ public class Player {
 			this.stamina = 50 - this.random.nextInt(5);	
 	}
 
-
+	/**
+	 * Método que genera la precision del jugador
+	 * de manera aleatoria dependiendo del genero.
+	 */
 	private void setPrecision() {
 		if(this.gender == 'F')
 			this.precision = 50 + this.random.nextInt(5);
@@ -53,36 +75,75 @@ public class Player {
 			this.precision = 50 - this.random.nextInt(5);
 	}
 	
-	public void shootArrow(boolean isLucky) {
+	/**
+	 * Método usado para simular el proceso de disparo,
+	 * hasta que finalice la resistencia del jugador.
+	 * @param isLucky PArametro usado para generar un disparo 
+	 * independiendte de la resistencia del jugaodr
+	 * @param weather Parametro usado para influenciar la 
+	 * distancia del disparo.
+	 */
+	public void shootArrow(boolean isLucky, char weather) {
 		double shootDistance  = 0;
 		if (isLucky) {
 			shootDistance = (Math.pow(setArrowVelocity(), 2) * Math.sin(2 * setAngleShoot()) / 9.8);
 			if((this.experience / 8) >= 1) {
 				shootDistance += shootDistance * ((this.experience / 8) * 0.025);
 			}
+			shootDistance = weatherInShoot(weather, shootDistance);
 			this.roundDistance += shootDistance;
 		}
 		else {
 			while (this.roundStamina >= 4) {
 				this.roundStamina -= 4;
-				shootDistance = (Math.pow(setArrowVelocity(), 2) * Math.sin(2 * setAngleShoot()) / 9.8);
+				shootDistance = (Math.pow(setArrowVelocity(), 2) * Math.sin(Math.toRadians(2 * setAngleShoot())) / 9.8);
 				if((this.experience / 8) >= 1) {
 					shootDistance += shootDistance * ((this.experience / 8) * 0.025);
 				}
+				shootDistance = weatherInShoot(weather, shootDistance);
 				this.roundDistance += shootDistance;
 			}
 		}
 	}
-
+	
+	/**
+	 *Método utilizado para generar la velocidad de la flecha en el disparo 
+	 * @return Valor de velocidad generado aleatoriamente
+	 */
 	private double setArrowVelocity() {
-		return 100 + this.random.nextInt(11);
+		return (100 + this.random.nextInt(11));
 	}
 	
+	/**
+	 * Método utilizado para generar el ángulo de disparo de la flecha.
+	 * @return Ángulo de disparo generado aleatoriamente
+	 */
 	private int setAngleShoot() {
 		if (this.gender == 'F')
-			return 30 + this.random.nextInt(5);
+			return (30 + this.random.nextInt(5));
 		else
-			return 30 - this.random.nextInt(5);
+			return (30 - this.random.nextInt(5));
+	}
+	
+	/**
+	 * Método usado para disminuir la distancia del disparo
+	 * dependiendo de los parametros entrantes.
+	 * @param weather Parametro usado para laterar la distancia del disparo.
+	 * @param shootDistance Distancia del disparo sin alterar.
+	 * @return Distancia del disparo alterada.
+	 */
+	private double weatherInShoot(char weather, double shootDistance) {
+		switch (weather) {
+		case 'V':
+			shootDistance -= shootDistance * 0.04;
+			break;
+		case 'L':
+			shootDistance -= shootDistance * 0.08;
+			break;
+		default:
+			break;
+		}
+		return shootDistance;
 	}
 
 	public String getName() {
@@ -105,7 +166,7 @@ public class Player {
 	public void setRoundStamina(int roundStamina) {
 		this.roundStamina = roundStamina;
 	}
-
+	
 	public double getRoundDistance() {
 		return roundDistance;
 	}
